@@ -1,6 +1,7 @@
 module Main exposing (..)
 import Html exposing (br, button, div, form, h1, input, li, strong, text, textarea, ul)
 --import Html.Attributes exposing ( type_)
+import Html.Attributes exposing (value)
 import Html.Events exposing (onInput, onSubmit)
 
 {-
@@ -76,11 +77,8 @@ update : Msg -> Model -> Model
 update msg model = 
     case msg of 
         PostComment ->
-            let
-                comments =
-                 List.append model.comments [ model.form ]
-            in
-            { model | comments = comments }
+            { comments = List.append model.comments [ model.form ]
+            , form = Comment "" "" }
         UpdateAuthor value ->
             { model | form = Comment value model.form.content }
         UpdateComment value ->
@@ -122,11 +120,11 @@ view model =
             [ onSubmit PostComment ]
             [ text "Nome:"
             , br [] []
-            , input [ onInput UpdateAuthor ] [] 
+            , input [ onInput UpdateAuthor ,value model.form.author ] [] 
             , br [] []
             , text "Comentário"
             , br [] []
-            , textarea [ onInput UpdateComment ] []
+            , textarea [ onInput UpdateComment, value model.form.content ] []
             , br [] []
             , button [ ] [ text "Enviar"]
             ]
